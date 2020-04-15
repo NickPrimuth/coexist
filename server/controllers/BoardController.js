@@ -7,13 +7,14 @@ const BoardController = {};
 BoardController.getStickies = (req, res, next) => {
   db.query({ text: queries.getStickies, values: [req.body.boardId] })
     .then(result => {
-      console.log(result);
-      // res.locals.stickies = result.rows[0];
+      console.log('made through', result.rows[0]);
+      res.locals.stickies = result.rows[0];
       return next();
     })
     .catch(err => {
+      console.log(err.error, 'err');
       next({
-        log: 'Error in middleware BoardController.getStickies',
+        log: 'Error in middleware BoardController.getStickies' + err,
       });
     });
 };

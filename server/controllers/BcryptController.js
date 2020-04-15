@@ -9,7 +9,7 @@ const BcryptController = {};
 BcryptController.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
     db.query({
-      text: queries.createUser,
+      text: queries.signUp,
       values: [req.body.username, req.body.boardname, hash],
     }).then(result => {
       console.log(result);
@@ -22,11 +22,12 @@ BcryptController.signup = (req, res, next) => {
 BcryptController.login = (req, res, next) => {
   //check if
   db.query({
-    text: queries.checkUser,
-    values: [req.body.username],
+    text: queries.logIn,
+    values: [req.body.username, req.body.password],
   })
     .then(user => {
       bcrypt.compare(req.body.password, user, (err, result) => {
+        console.log(user);
         if (err) {
           next({
             log: 'Error in middleware BoardController.postStickies' + err,
@@ -38,6 +39,7 @@ BcryptController.login = (req, res, next) => {
       });
     })
     .catch(err => {
+      console.log('error in bcrypt');
       //redirect to home if err
       next({
         log: 'Error in middleware BoardController.postStickies' + err,

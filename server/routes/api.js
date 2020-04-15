@@ -7,8 +7,7 @@ const BoardController = require('../controllers/BoardController');
 //get all stickies
 apiRouter.get('/stickies', BoardController.getStickies, (req, res) => {
   //get all stickies for current board
-  res.status(200);
-  // .json(res.locals);
+  res.status(200).json(res.locals);
 });
 
 //post new sticky
